@@ -119,7 +119,7 @@ Since we are not exposing the admin_server port **3333**, we don't SSL for that.
 
 phish_server is going to interact with the victims, configure that on port 443 and get a valid SSL certificate.
 
-For SSL certificate, we can use ***Let's Encrypt***.
+For SSL certificate, we can use **_Let's Encrypt_**.
 
 ```bash
 sudo certbot -d domain.com --nginx
@@ -130,7 +130,7 @@ sudo certbot -d domain.com --nginx
 While try to get the certificate, make sure that we open port 80 of the ec2 instance on AWS console.
 Let's encrypt uses port 80 by default to check the whether DNS for the domain is pointing to the EC2 IP address.
 
-If we start our GoPhish server, we may see that it is listening  on port 3333 on localhost and 443 on all ports.
+If we start our GoPhish server, we may see that it is listening on port 3333 on localhost and 443 on all ports.
 
 Admin portal is not directly exposed to the internet, it's running on localhost.
 
@@ -143,6 +143,7 @@ ssh ubuntu@<ip> -i gophish_server.pem -L 3333:localhost:3333
 Once we are logged in, with in tmux, we can start the GoPhish server.
 
 They navigate to **<http://localhost:3333>**, and we're able to find the admin portal.
+
 <p align="center"><img src="/images/phish/gophish_login.jpeg"></p>
 
 Once we log in, we have to set up 4 things
@@ -157,10 +158,10 @@ Let's start
 
 To send the email, we will be using Amazon SES
 
-
 ### Configure SES
 
 Let's add the domain to SES service. If we have our DNS server configured in Route53, it will automatically take care of DKIM and all other mail server configurations.
+
 <p align="center"><img src="/images/phish/ses_domain.jpeg"></p>
 
 By default, all the identities created are in a sandbox. We have to raise a request to the Amazon for taking it out of sandbox. It's fairly simple procedure.
@@ -171,6 +172,7 @@ By default, all the identities created are in a sandbox. We have to raise a requ
 Within hours, the request will be fulfilled, and we will be able to send emails.
 
 Once that is done, let's create an SMTP credential so that we can authenticate from GoPhish.
+
 <p align="center"><img src="/images/phish/create_smtp.jpeg"></p>
 
 Please follow the [link](https://docs.aws.amazon.com/ses/latest/dg/setting-up.html) to get more details on configuring Amazon SES.
@@ -194,9 +196,9 @@ It's up-to the imagination of the operator on what story they want to tell here.
 
 ### Landing Page
 
-Once we have the email pretext, let's create a landing page. Once the user clicks  on the link, they will be greeted by this page.
+Once we have the email pretext, let's create a landing page. Once the user clicks on the link, they will be greeted by this page.
 
-To make the page creation easier, GoPhish has a functionality by which we can import a  website.
+To make the page creation easier, GoPhish has a functionality by which we can import a website.
 
 <p align="center"><img src="/images/phish/gophish_land1.png"></p>
 <p align="center"><img src="/images/phish/land_import.png"></p>
@@ -220,6 +222,7 @@ If everything works out, we will find the email in victim's inbox.
 <p align="center"><img src="/images/phish/mail_landed.jpeg"></p>
 
 Once the users clicks on the link, the victim will be greeted with a login page.
+
 <p align="center"><img src="/images/phish/login_page.jpeg"></p>
 
 Once they put in the credentials, we can see that on the GoPhish dashboard
